@@ -2,15 +2,17 @@ require 'log4r'
 require 'rbconfig'
 require 'vagrant/util/subprocess'
 
+require 'vagrant-openstack-provider/action/abstract_action'
+
 module VagrantPlugins
   module Openstack
     module Action
-      class SyncFolders
+      class SyncFolders < AbstractAction
         def initialize(app, _env)
           @app = app
         end
 
-        def call(env)
+        def execute(env)
           sync_method = env[:machine].provider_config.sync_method
           if sync_method == 'rsync'
             RsyncFolders.new(@app, env).call(env)

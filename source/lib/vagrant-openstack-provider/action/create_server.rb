@@ -4,12 +4,13 @@ require 'timeout'
 require 'sshkey'
 
 require 'vagrant-openstack-provider/config_resolver'
+require 'vagrant-openstack-provider/action/abstract_action'
 require 'vagrant/util/retryable'
 
 module VagrantPlugins
   module Openstack
     module Action
-      class CreateServer
+      class CreateServer < AbstractAction
         include Vagrant::Util::Retryable
 
         def initialize(app, _env, resolver = nil)
@@ -22,7 +23,7 @@ module VagrantPlugins
           end
         end
 
-        def call(env)
+        def execute(env)
           @logger.info 'Start create server action'
 
           config = env[:machine].provider_config

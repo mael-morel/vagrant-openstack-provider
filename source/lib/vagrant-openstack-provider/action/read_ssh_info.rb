@@ -1,13 +1,14 @@
 require 'log4r'
 
 require 'vagrant-openstack-provider/config_resolver'
+require 'vagrant-openstack-provider/action/abstract_action'
 
 module VagrantPlugins
   module Openstack
     module Action
       # This action reads the SSH info for the machine and puts it into the
       # `:machine_ssh_info` key in the environment.
-      class ReadSSHInfo
+      class ReadSSHInfo < AbstractAction
         def initialize(app, _env, resolver = nil)
           @app    = app
           @logger = Log4r::Logger.new('vagrant_openstack::action::read_ssh_info')
@@ -18,7 +19,7 @@ module VagrantPlugins
           end
         end
 
-        def call(env)
+        def execute(env)
           @logger.info 'Reading SSH info'
           env[:machine_ssh_info] = read_ssh_info(env)
 

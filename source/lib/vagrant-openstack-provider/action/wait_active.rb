@@ -1,16 +1,18 @@
 require 'log4r'
 require 'timeout'
 
+require 'vagrant-openstack-provider/action/abstract_action'
+
 module VagrantPlugins
   module Openstack
     module Action
-      class WaitForServerToBeActive
+      class WaitForServerToBeActive < AbstractAction
         def initialize(app, _env)
           @app    = app
           @logger = Log4r::Logger.new('vagrant_openstack::action::start_server')
         end
 
-        def call(env)
+        def execute(env)
           if env[:machine].id
             env[:ui].info(I18n.t('vagrant_openstack.waiting_start'))
             client = env[:openstack_client].nova
